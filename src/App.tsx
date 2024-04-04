@@ -1,10 +1,10 @@
-import { Button } from "./components/ui/button";
+import CreateNewTaskModal from "./components/create-new-task-modal";
 
 function App() {
 	return (
-		<div>
-			<Button>Hello</Button>
-		</div>
+		<main className="w-[500px] bg-red-500 mx-auto mt-8">
+			<CreateNewTaskModal />
+		</main>
 	);
 }
 
