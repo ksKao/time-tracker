@@ -81,30 +81,32 @@ export default function TaskItem({ task }: { task: Task }) {
 				)
 			</AccordionTrigger>
 			<AccordionContent>
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead>Start</TableHead>
-							<TableHead>End</TableHead>
-							<TableHead>Break</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{task.times.map((time, i) => (
-							<TableRow key={i}>
-								<TableCell>{formatDate(time.start)}</TableCell>
-								<TableCell>{time.end ? formatDate(time.end) : "TBD"}</TableCell>
-								<TableCell>
-									<Checkbox
-										onCheckedChange={(checked) =>
-											breakTime(checked === true, i)
-										}
-									/>
-								</TableCell>
+				{task.times.length ? (
+					<Table className="mb-6">
+						<TableHeader>
+							<TableRow>
+								<TableHead>Start</TableHead>
+								<TableHead>End</TableHead>
+								<TableHead>Break</TableHead>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
+						</TableHeader>
+						<TableBody>
+							{task.times.map((time, i) => (
+								<TableRow key={i}>
+									<TableCell>{formatDate(time.start)}</TableCell>
+									<TableCell>{time.end ? formatDate(time.end) : "TBD"}</TableCell>
+									<TableCell>
+										<Checkbox
+											onCheckedChange={(checked) =>
+												breakTime(checked === true, i)
+											}
+										/>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				) : null}
 				<div className="flex w-full justify-between gap-2 items-center">
 					<Button className="flex-grow" onClick={startTask}>
 						Start
