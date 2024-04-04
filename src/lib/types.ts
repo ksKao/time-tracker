@@ -4,12 +4,13 @@ export type TaskContextType = {
 };
 
 export type Time = {
-	start: Date;
-	end: Date;
+	start: string;
+	end?: string;
 	break: boolean;
 };
 
 export type Task = {
+	id: string;
 	name: string;
 	times: Time[];
 };

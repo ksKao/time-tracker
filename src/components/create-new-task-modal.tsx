@@ -24,6 +24,7 @@ export default function CreateNewTaskModal() {
 		setTasks([
 			...tasks,
 			{
+				id: crypto.randomUUID(),
 				name: taskName,
 				times: [],
 			},
