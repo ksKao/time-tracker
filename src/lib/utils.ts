@@ -67,6 +67,10 @@ export function calculateTotalTime(task: Task) {
 
 	if (!hours && !minutes) return undefined;
 
+	// Add this here to prevent minute from overflowing
+	hours += Math.floor(minutes / 60);
+	minutes = minutes % 60;
+
 	return {
 		hours,
 		minutes,
