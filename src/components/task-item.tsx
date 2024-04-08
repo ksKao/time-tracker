@@ -97,6 +97,7 @@ export default function TaskItem({ task }: { task: Task }) {
 									<TableCell>{time.end ? formatDate(time.end) : "TBD"}</TableCell>
 									<TableCell>
 										<Checkbox
+											checked={time.break}
 											onCheckedChange={(checked) =>
 												breakTime(checked === true, i)
 											}
