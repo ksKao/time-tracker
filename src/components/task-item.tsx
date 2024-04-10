@@ -13,6 +13,8 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
+import EditTimeModal from "./edit-time-modal";
+import DeleteTimeModal from "./delete-time-modal";
 
 export default function TaskItem({ task }: { task: Task }) {
 	const { tasks, setTasks } = useTasks();
@@ -26,6 +28,7 @@ export default function TaskItem({ task }: { task: Task }) {
 
 			if (t.id == task.id) {
 				t.times.push({
+					id: crypto.randomUUID(),
 					start: new Date().toString(),
 					break: false,
 				});
@@ -74,8 +77,8 @@ export default function TaskItem({ task }: { task: Task }) {
 			<AccordionTrigger>
 				{task.name} (
 				{totalTime
-					? `${totalTime.hours ? totalTime.hours + "h " : ""}${
-							totalTime.minutes ? totalTime.minutes + "m" : ""
+					? `${totalTime.hours ? totalTime.hours + "h" : ""}${
+							totalTime.minutes ? " " + totalTime.minutes + "m" : ""
 					  }`
 					: "Not started"}
 				)
@@ -88,6 +91,7 @@ export default function TaskItem({ task }: { task: Task }) {
 								<TableHead>Start</TableHead>
 								<TableHead>End</TableHead>
 								<TableHead>Break</TableHead>
+								<TableHead></TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -102,6 +106,10 @@ export default function TaskItem({ task }: { task: Task }) {
 												breakTime(checked === true, i)
 											}
 										/>
+									</TableCell>
+									<TableCell className="flex justify-center items-center gap-4">
+										<EditTimeModal time={time} />
+										<DeleteTimeModal time={time} />
 									</TableCell>
 								</TableRow>
 							))}
