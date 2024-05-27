@@ -3,7 +3,7 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/
 import { Task } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/lib/hooks/useTask";
-import { calculateTotalTime, formatDate } from "@/lib/utils";
+import { calculateDuration, calculateTotalTime, formatDate } from "@/lib/utils";
 import {
 	Table,
 	TableBody,
@@ -91,28 +91,49 @@ export default function TaskItem({ task }: { task: Task }) {
 								<TableHead>Start</TableHead>
 								<TableHead>End</TableHead>
 								<TableHead>Break</TableHead>
+								<TableHead>Duration</TableHead>
 								<TableHead></TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{task.times.map((time, i) => (
-								<TableRow key={i}>
-									<TableCell>{formatDate(time.start)}</TableCell>
-									<TableCell>{time.end ? formatDate(time.end) : "TBD"}</TableCell>
-									<TableCell>
-										<Checkbox
-											checked={time.break}
-											onCheckedChange={(checked) =>
-												breakTime(checked === true, i)
-											}
-										/>
-									</TableCell>
-									<TableCell className="flex justify-center items-center gap-4">
-										<EditTimeModal time={time} />
-										<DeleteTimeModal time={time} />
-									</TableCell>
-								</TableRow>
-							))}
+							{task.times.map((time, i) => {
+								return (
+									<TableRow key={i}>
+										<TableCell>{formatDate(time.start)}</TableCell>
+										<TableCell>
+											{time.end ? formatDate(time.end) : "TBD"}
+										</TableCell>
+										<TableCell>
+											<Checkbox
+												checked={time.break}
+												onCheckedChange={(checked) =>
+													breakTime(checked === true, i)
+												}
+											/>
+										</TableCell>
+										<TableCell>
+											{time.end
+												? calculateDuration(
+														new Date(time.start),
+														new Date(time.end),
+														time.break
+												  ).hours +
+												  "h " +
+												  calculateDuration(
+														new Date(time.start),
+														new Date(time.end),
+														time.break
+												  ).minutes +
+												  "m"
+												: ""}
+										</TableCell>
+										<TableCell className="flex justify-center items-center gap-4">
+											<EditTimeModal time={time} />
+											<DeleteTimeModal time={time} />
+										</TableCell>
+									</TableRow>
+								);
+							})}
 						</TableBody>
 					</Table>
 				) : null}

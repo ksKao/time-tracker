@@ -51,25 +51,40 @@ export function calculateTotalTime(task: Task) {
 		const start = new Date(time.start);
 		const end = new Date(time.end);
 
-		const diff = end.getTime() - start.getTime();
+		const duration = calculateDuration(start, end, time.break);
 
-		// Convert milliseconds to hours
-		hours += Math.floor(diff / 3600000);
-
-		// Get the remainder after dividing by the number of milliseconds in an hour
-		const remainder = diff % 3600000;
-
-		// Convert the remainder to minutes
-		minutes += Math.round(remainder / 60000);
-
-		if (time.break) hours--;
+		hours += duration.hours;
+		minutes += duration.minutes;
 	}
 
 	if (!hours && !minutes) return undefined;
 
-	// Add this here to prevent minute from overflowing
+	// Add this here to prevent minute from overflowing (can happen if task 1 has 40m and task 2 has 30m)
 	hours += Math.floor(minutes / 60);
 	minutes = minutes % 60;
+
+	return {
+		hours,
+		minutes,
+	};
+}
+
+export function calculateDuration(start: Date, end: Date, isBreak: boolean) {
+	let hours = 0,
+		minutes = 0;
+
+	const diff = end.getTime() - start.getTime();
+
+	// Convert milliseconds to hours
+	hours += Math.floor(diff / 3600000);
+
+	// Get the remainder after dividing by the number of milliseconds in an hour
+	const remainder = diff % 3600000;
+
+	// Convert the remainder to minutes
+	minutes += Math.round(remainder / 60000);
+
+	if (isBreak) hours--;
 
 	return {
 		hours,
